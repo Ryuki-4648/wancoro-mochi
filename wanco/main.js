@@ -30,21 +30,45 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 // レンダリングしたいDOM要素と紐付け
 document.body.appendChild(renderer.domElement);
 
-// ジオメトリ：3Dオブジェクトの形状を定義するためのクラス。色々な形状を作成できる。
-const ballGeometry = new THREE.SphereGeometry(100, 64, 32); // SphereGeometry()は球体の形状を定義
+// // ジオメトリ：3Dオブジェクトの形状を定義するためのクラス。色々な形状を作成できる。
+// const ballGeometry = new THREE.SphereGeometry(100, 64, 32); // SphereGeometry()は球体の形状を定義
 
-// マテリアル：3Dオブジェクトが画面にレンダリングされるときの外観や質感を決定する
-const ballMaterial = new THREE.MeshPhysicalMaterial();
+// // マテリアル：3Dオブジェクトが画面にレンダリングされるときの外観や質感を決定する
+// const ballMaterial = new THREE.MeshPhysicalMaterial();
 
-// メッシュ化：ジオメトリ（形状）とマテリアル（材質）の組み合わせから構成される
-const ballMesh = new THREE.Mesh(ballGeometry, ballMaterial);
-scene.add(ballMesh);
+// // メッシュ化：ジオメトリ（形状）とマテリアル（材質）の組み合わせから構成される
+// const ballMesh = new THREE.Mesh(ballGeometry, ballMaterial);
+// scene.add(ballMesh);
 
-// 平行光源の追加
+const dogFaceGeometry = new THREE.SphereGeometry(100, 64, 32);
+const dogFaceMaterial = new THREE.MeshPhysicalMaterial();
+const dogFaceMesh = new THREE.Mesh(dogFaceGeometry, dogFaceMaterial);
+scene.add(dogFaceMesh);
+
+// 耳の作成（三角錐の形状）
+const earGeometry = new THREE.ConeGeometry(40, 100, 32);
+const earMaterial = new THREE.MeshPhysicalMaterial();
+const leftEarMesh = new THREE.Mesh(earGeometry, earMaterial);
+const rightEarMesh = new THREE.Mesh(earGeometry, earMaterial);
+
+// 耳の回転と位置調整
+leftEarMesh.rotation.x = Math.PI / 2;
+rightEarMesh.rotation.x = Math.PI / 2;
+leftEarMesh.position.set(-75, 50, 75);
+rightEarMesh.position.set(75, 50, 75);
+
+scene.add(leftEarMesh);
+scene.add(rightEarMesh);
+
 const directionalLight = new THREE.DirectionalLight(0xfffae8, 3);
+directionalLight.position.set(0.4, 0.5, 1);
+scene.add(directionalLight);
 
-// 光の当たる位置調整
-directionalLight.position.set(0.4, 0.5, 1); 
+// // 平行光源の追加
+// const directionalLight = new THREE.DirectionalLight(0xfffae8, 3);
+
+// // 光の当たる位置調整
+// directionalLight.position.set(0.4, 0.5, 1); 
 
 // シーンに追加
 scene.add(directionalLight);
@@ -53,6 +77,7 @@ scene.add(directionalLight);
 const pointLight = new THREE.PointLight(0xfffae8, 1);
 pointLight.position.set(-200, -200, -200);
 scene.add(pointLight);
+
 
 // マウス操作
 const Controls = new OrbitControls(camera, renderer.domElement);
@@ -70,7 +95,7 @@ function animate() {
   );
   // フレーム単位で関数実行
   requestAnimationFrame(animate);
-
+  Controls.update();
   // レンダリング関数
   renderer.render(scene, camera);
 }
